@@ -27,6 +27,7 @@
             <div class="col-lg-9 col-12">
                 @foreach ($roomListAll as $item)
                 <!-- ITEM -->
+                
                 <div class="room-list-item">
                     <div class="row">
                         <div class="col-lg-5">
