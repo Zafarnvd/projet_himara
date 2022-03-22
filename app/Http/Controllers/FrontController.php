@@ -34,28 +34,41 @@ class FrontController extends Controller
         $blogLast = Article::latest()->take(3)->get();
         return view('blog', compact("blog", "tag", "categorieArticle", "blogLast"));
     }
-
-    // Page pr afficher un seul article
-    public function article()
+    // Page qui permet de rechercher les articles en tapant dans l'input
+    public function search(Request $request)
     {
+
+        $data = $request->data;
+        $blog = Article::where('title', 'like', "%$data%")
+            ->get();
+        $tag = Tag::all();
+        $categorieArticle = CategorieArticle::all();
+        $blogLast = Article::latest()->take(3)->get();
+        return view('blog', compact("blog", "tag", "categorieArticle", "blogLast"));
     }
 
-
-    // Page pour afficher
+    // Page pour afficher les articles d'un tag
     public function tagCategorie($id)
     {
 
         $tagiD = Tag::find($id);
         $blog = $tagiD->articles;
         $tag = Tag::all();
-        $categoryArticle = categorieArticle::all();
+        $categorieArticle = CategorieArticle::all();
         $blogLast = Article::latest()->take(3)->get();
-
-
-        // dd($projetTout);
-        return view("pages.blog", compact("categoryArticle", "blog", "tag", "blogLast"));
+        return view('blog', compact("blog", "tag", "categorieArticle", "blogLast"));
     }
 
+    // Page qui permet d'afficher les articles par catégorie
+    public function searchCategorie($id)
+    {
+        $categoryId = CategorieArticle::find($id);
+        $blog = $categoryId->articles;
+        $tag = Tag::all();
+        $categorieArticle = CategorieArticle::all();
+        $blogLast = Article::latest()->take(3)->get();
+        return view('blog', compact("blog", "tag", "categorieArticle", "blogLast"));
+    }
 
     public function booking_form()
     {
@@ -148,32 +161,9 @@ class FrontController extends Controller
         return view('staff', compact("team", "houseKeeper"));
     }
 
-    // Page qui permet d'afficher les articles par catégorie
-    public function searchCategorie($id)
-    {
-        $roomListAll = Article::where("categorie_article_id", $id)->get();
-        $tag = Tag::all();
-        $categorieArticle = CategorieArticle::all();
-        $blogLast = Article::latest()->take(3)->get();
+    
 
-        return view("blog", compact("categoryArticle", "roomListAll", "tag", "blogLast"));
-    }
 
-    // Page qui permet de rechercher les articles en tapant dans l'input
-    public function search(Request $request)
-    {
-
-        $data = $request->data;
-        $roomListAll = Chambre::where('nom', 'like', "%$data%")
-            ->get();
-
-        // $blog = Article::all();
-        $tagRoom = Tag::all();
-        $categoryRoom = CategorieChambre::all();
-        $blogLast = Chambre::latest()->take(3)->get();
-
-        return view("roomslist", compact("roomListAll", "tagRoom", "categoryRoom", "blogLast"));
-    }
 
     //  Page qui permet de rechercher les chambres par catégorie
     public function searchRoomCategorie($id)

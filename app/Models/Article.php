@@ -20,7 +20,7 @@ class Article extends Model
 
     public function category()
     {
-        return $this->hasMany(CategorieArticle::class, 'categorie_article_id');
+        return $this->belongsTo(CategorieArticle::class, 'categorie_article_id');
     }
 
     public function comments()

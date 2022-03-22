@@ -7,7 +7,7 @@
 
         <!-- ========== PAGE TITLE ========== -->
         <div class="page-title gradient-overlay op6" style="background: url(images/breadcrumb.jpg); background-repeat: no-repeat;
-                      background-size: cover;">
+                                          background-size: cover;">
             <div class="container">
                 <div class="inner">
                     <h1>Blog</h1>
@@ -62,8 +62,15 @@
                                                     </span>
                                                     <span class="category">
                                                         <i class="fa fa-folder-open-o"></i>IN
-                                                        <a href="#">News</a>,
-                                                        <a href="#">Events</a>
+                                                        @foreach ($article->tags as $item)
+                                                            @if ($loop->last)
+                                                                <a
+                                                                    href="{{ route('article.tagCategorie', $item->id) }}">{{ $item->nom }}</a>
+                                                            @else
+                                                                <a
+                                                                    href="{{ route('article.tagCategorie', $item->id) }}">{{ $item->nom }}</a>,
+                                                            @endif
+                                                        @endforeach
                                                     </span>
                                                 </div>
                                                 <p>{{ $article->description }}</p>
@@ -122,8 +129,9 @@
                         <div class="sidebar">
                             <aside class="widget noborder">
                                 <div class="search">
-                                    <form class="widget-search">
-                                        <input type="search" placeholder="Search">
+                                    <form class="widget-search" method="POST" action="{{ route('article.search') }}">
+                                        @csrf
+                                        <input type="search" placeholder="Search" name="data">
                                         <button class="btn-search" id="searchsubmit" type="submit">
                                             <i class="fa fa-search"></i>
                                         </button>
@@ -136,7 +144,7 @@
                                 <ul class="categories">
                                     @foreach ($categorieArticle as $categorie)
                                         <li>
-                                            <a href="#">{{ $categorie->nom }}<span
+                                            <a href="{{ route('article.categorie', $categorie->id) }}">{{ $categorie->nom }}<span
                                                     class="posts-num">{{ count($categorie->articles) }}</span></a>
                                         </li>
                                     @endforeach
@@ -177,7 +185,7 @@
                                 <h4 class="widget-title">Tags</h4>
                                 <div class="tagcloud">
                                     @foreach ($tag as $item)
-                                        <a href="#">
+                                        <a href="{{ route('article.tagCategorie', $item->id) }}">
                                             <span class="tag">{{ $item->nom }}</span></a>
                                     @endforeach
 
