@@ -1,7 +1,6 @@
 @extends('layouts.index')
 @section('content')
     
-<body>
   <!-- ========== PRELOADER ========== -->
   <div class="loader loader3">
     <div class="loader-inner">

@@ -21,9 +21,11 @@ class FrontController extends Controller
     {
         $serviceAll = Service::all();
 
-       return view("home" ,compact("serviceAll"));
+        return view("home", compact("serviceAll"));
     }
-    
+
+    // Page pr afficher tous les articles
+
     public function blog()
     {
         $blog = Article::all();
@@ -33,6 +35,13 @@ class FrontController extends Controller
         return view('blog', compact("blog", "tag", "categorieArticle", "blogLast"));
     }
 
+    // Page pr afficher un seul article
+    public function article()
+    {
+    }
+
+
+    // Page pour afficher
     public function tagCategorie($id)
     {
 
@@ -44,10 +53,10 @@ class FrontController extends Controller
 
 
         // dd($projetTout);
-        return view("pages.blog",compact("categoryArticle","blog","tag","blogLast"));
+        return view("pages.blog", compact("categoryArticle", "blog", "tag", "blogLast"));
     }
 
-    
+
     public function booking_form()
     {
         return view('booking-form');
@@ -68,6 +77,8 @@ class FrontController extends Controller
     {
         return view('events');
     }
+
+    // Page qui permet d'afficher la gallerie
     public function gallery()
     {
         $imageAll = Image::all();
@@ -91,6 +102,7 @@ class FrontController extends Controller
         return view('page');
     }
 
+    // Page qui permet de récupérer toutes les chambres
     public function roomlist()
     {
         $roomListAll = Chambre::all();
@@ -99,6 +111,8 @@ class FrontController extends Controller
         return view('roomslist', compact("roomListAll", "tagRoom", "categoryRoom"));
     }
 
+
+    // Page pour afficher une seule chambre
     public function room($id)
     {
         $room = Chambre::find($id);
@@ -106,7 +120,9 @@ class FrontController extends Controller
         $categorieroom = CategorieChambre::all();
         return view('rooms', compact("room", "tagRoom", "categorieroom"));
     }
-    
+
+
+    // Page qui permet de trier les chambres par tag
     public function tagRooms($id)
     {
         $roomListAll = Chambre::all();
@@ -121,77 +137,80 @@ class FrontController extends Controller
         $categoryRoom = CategorieChambre::all();
 
         // dd($projetTout);
-        return view("roomslist",compact("tagRoom","roomListAll","categoryRoom"));
+        return view("roomslist", compact("tagRoom", "roomListAll", "categoryRoom"));
     }
+
+    // Page qui permet d'afficher ts les membres du staff
     public function staff()
     {
         $team = Employe::all();
         $houseKeeper = Employe::where("fonction_id", 1)->first();
         return view('staff', compact("team", "houseKeeper"));
     }
-    public function style_guide()
-    {
-        return view('style-guide');
-    }
 
+    // Page qui permet d'afficher les articles par catégorie
     public function searchCategorie($id)
     {
-        $blog = Article::where("categorie_article_id", $id)->get();
+        $roomListAll = Article::where("categorie_article_id", $id)->get();
         $tag = Tag::all();
         $categorieArticle = CategorieArticle::all();
         $blogLast = Article::latest()->take(3)->get();
 
-        return view("blog",compact("categoryArticle","blog","tag","blogLast"));
+        return view("blog", compact("categoryArticle", "roomListAll", "tag", "blogLast"));
     }
 
+    // Page qui permet de rechercher les articles en tapant dans l'input
     public function search(Request $request)
-     {
-
-         $data = $request->data;
-         $blog= Article::where('title', 'like', "%$data%")
-                 ->get();
-
-        // $blog = Article::all();
-        $tag = Tag::all();
-        $categoryArticle = categorieArticle::all();
-        $blogLast = Article::latest()->take(3)->get();
-
-        return view("pages.blog",compact("blog","tag","categoryArticle","blogLast"));
-
-     }
-
-     public function searchRoomCategorie($id)
     {
 
-        $roomListAll = Chambre::where("categorie_chambre_id",$id)->get();
+        $data = $request->data;
+        $roomListAll = Chambre::where('nom', 'like', "%$data%")
+            ->get();
+
+        // $blog = Article::all();
+        $tagRoom = Tag::all();
+        $categoryRoom = CategorieChambre::all();
+        $blogLast = Chambre::latest()->take(3)->get();
+
+        return view("roomslist", compact("roomListAll", "tagRoom", "categoryRoom", "blogLast"));
+    }
+
+    //  Page qui permet de rechercher les chambres par catégorie
+    public function searchRoomCategorie($id)
+    {
+
+        $roomListAll = Chambre::where("categorie_chambre_id", $id)->get();
         $categoryRoom = CategorieChambre::all();
         // dd($categoryRoomArticle);
 
         $tagRoom = TagChambre::all();
 
-        return view("roomslist", compact("roomListAll","categoryRoom","tagRoom"));
+        return view("roomslist", compact("roomListAll", "categoryRoom", "tagRoom"));
     }
 
+
+    // PAge qui permet de rechercher les chambres via barre de recherche
     public function RoomSearch(Request $request)
     {
 
         $data = $request->data;
-        $roomListAll= Chambre::where('titre', 'like', "%$data%")
-                ->get();
+        $roomListAll = Chambre::where('titre', 'like', "%$data%")
+            ->get();
         $categoryRoom = CategorieChambre::all();
         $tagRoom = TagChambre::all();
 
 
-       return view("pages.roomslist",compact("roomListAll","categoryRoom","tagRoom"));
-
+        return view("pages.roomslist", compact("roomListAll", "categoryRoom", "tagRoom"));
     }
 
-     public function blogPost($id)
-     {
+
+    // Page qui permet d'afficher un article en particulier
+    public function blogPost($id)
+    {
         $blog = Article::find($id);
         // dd($projetTout);
         $comment = Comment::all();
 
-        return view("pages.blogpost",compact("blog","comment"));
-     }
+        return view("pages.blogpost", compact("blog", "comment"));
+    }
 }
