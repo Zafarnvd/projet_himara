@@ -14,16 +14,22 @@ class StatutServiceSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('statut_services')->insert([
+        DB::table('statut_services')->insert(
             [
-                "nom"=>"DISPO"
-            ],
-            [
-                "nom"=>"INDISPO"
-            ],
-            [
-                "nom"=>"MASQUE"
-            ],
-        ]);
+                [
+                    "nom"=>"NotOk"
+                    
+                ],
+                [
+                    "nom"=>"Okeee"
+                    
+                ],
+                [
+                    "nom"=>"Nop"
+                    
+                ]
+
+            ]
+            );
     }
 }

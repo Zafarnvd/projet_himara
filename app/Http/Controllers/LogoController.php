@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Logo;
+use App\Models\logo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LogoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,8 @@ class LogoController extends Controller
      */
     public function index()
     {
-        //
+        $logo = logo::first();
+        return view('admin.logo.index', compact('logo'));
     }
 
     /**
@@ -41,10 +47,10 @@ class LogoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Logo  $logo
+     * @param  \App\Models\logo  $logo
      * @return \Illuminate\Http\Response
      */
-    public function show(Logo $logo)
+    public function show(logo $logo)
     {
         //
     }
@@ -52,33 +58,48 @@ class LogoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Logo  $logo
+     * @param  \App\Models\logo  $logo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Logo $logo)
+    public function edit()
     {
-        //
+        $logo = logo::first();
+        return view('admin.logo.edit', compact('logo'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Logo  $logo
+     * @param  \App\Models\logo  $logo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Logo $logo)
+    public function update(Request $request)
     {
-        //
+        
+        $logo = logo::first();
+        $request->validate([
+            'image' => ['required', 'image']
+        ]);
+
+        if ($request->hasFile('image')) {
+            if (Storage::disk('public')->exists($logo->url)) {
+                // Storage::disk('public')->delete($logo->url);
+            }
+            $image = Storage::disk('public')->put('', $request->image);
+            $logo->url = $image;
+        }
+        $logo->save();
+        return redirect()->route('logo.edit');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Logo  $logo
+     * @param  \App\Models\logo  $logo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Logo $logo)
+    public function destroy(logo $logo)
     {
         //
     }

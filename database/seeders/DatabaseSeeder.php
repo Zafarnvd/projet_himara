@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ServiceChambre;
-use App\Models\ServiceRoom;
+use App\Models\CategoryChambre;
+use App\Models\Chambre;
+use App\Models\Staff;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,34 +17,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // \App\Models\User::factory(10)->create();
         $this->call([
+
+            LogoSeeder::class,
+            InfoSeeder::class,
+            FonctionSeeder::class,
+            StaffSeeder::class,
+            CarouselSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            CarouselSeeder::class,
-            CategorieArticleSeeder::class,
-            CategorieChambreSeeder::class,
-            CategorieImageSeeder::class,
+            CategoryArticlesSeeder::class,
             ArticleSeeder::class,
-            TagChambreSeeder::class,
-            // BlogSeeder::class,
-            ChambreSeeder::class,
-            ChambreTagSeeder::class,
-            // CommentSeeder::class,
-            ContactSeeder::class,
-            FonctionSeeder::class,
-            EmployeSeeder::class,
-            ImageSeeder::class,
-            InfoSeeder::class,
-            LogoSeeder::class,
-            ReservationSeeder::class,
-            RoleSeeder::class,
-            ServiceSeeder::class,
-            StatutServiceSeeder::class,
-            ServiceChambreSeeder::class,
-            ServiceRoomSeeder::class,
             TagSeeder::class,
+            CategoryChambreSeeder::class,
+            ChambreSeeder::class,
+            ContactSeeder::class,
+            CategoryImageSeeder::class,
+            ChambreTagSeeder::class,
             TagArticleSeeder::class,
-            LogoSeeder::class
+            ServiceRoomSeeder::class,
+            StatutServiceSeeder::class,
+            ServiceSeeder::class,
+            ChambreSeeder::class,
+            ChambreServiceSeeder::class,
+            ImageSeeder::class,
+            ReservationSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Logo;
+use App\Models\logo;
+// use Facade\FlareClient\View;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('navlogo', Logo::first());
+        View::share('navLogo', logo::first());
     }
 }
